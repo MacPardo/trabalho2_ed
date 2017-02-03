@@ -168,6 +168,7 @@ void imprimirVetor(TpContato v[], int tam)
 void swap(TpContato * a, TpContato * b)//RECHECKKK!!!!<<<<<---------------------
 {
 	//troca os valores de a e b
+	//tentei usar copyData, mas não funcionou
 	TpContato aux;
 	strcpy(aux.nome, a->nome);
 	strcpy(aux.fone, a->fone);
@@ -230,7 +231,7 @@ void _radixSortVetor(TpContato a[], TpContato temp[], int lo, int hi, int d, int
 	int i, r, count[ASCII + 2] = {0}, count2[ASCII + 2];
 	
 	if (hi <= lo) return;
-	printf("a   ");
+	printf("lo = %d hi = %d\n", lo, hi);
 
 	//completar
 
@@ -252,6 +253,7 @@ void _radixSortVetor(TpContato a[], TpContato temp[], int lo, int hi, int d, int
 
 	for (r = 0; r < ASCII; r++)
 	{
+		printf("lo = %d count[r] = %d count[r + 1] = %d lo + count[r + 1] - 1 = %d\n", lo, count[r], count[r + 1], lo + count[r + 1] - 1);
 		_radixSortVetor(a, temp, lo + count[r], lo + count[r + 1] - 1, d + 1, N);
 	}
 }
