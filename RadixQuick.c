@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-#define TAM_VETOR 40
+#define TAM_VETOR 10
 #define MIN_FONE 10000000
 #define MAX_FONE 99999999
 #define ASCII 256
@@ -189,7 +189,7 @@ int partitionVetor(TpContato vetor[], int p, int q)
 
 	for(i = p - 1, j = p; j < q; j++)
 	{
-		if(strcmp(vetor[j].nome, pivo.nome) == -1)
+		if(strcmp(vetor[j].nome, pivo.nome) < 0)
 		{
 			i++;
 			swap(&vetor[i], &vetor[j]);
@@ -228,7 +228,7 @@ int charAt(char vetor[], int pos)
 
 void _radixSortVetor(TpContato a[], TpContato temp[], int lo, int hi, int d, int N)
 {
-	int i, r, count[ASCII + 2] = {0}, count2[ASCII + 2];
+	int i, r, count[ASCII + 2] = {0};
 	
 	if (hi <= lo) return;
 	printf("lo = %d hi = %d\n", lo, hi);
@@ -239,21 +239,21 @@ void _radixSortVetor(TpContato a[], TpContato temp[], int lo, int hi, int d, int
 	{
 		count[charAt(a[i].nome, d)]++;
 	}
-	count2[0] = count[0];
 	for(i = 1; i <= ASCII; i++)
 	{
 		count[i] += count[i - 1];
-		count2[i] = count[i];
 	}
 	
 	for(i = lo; i <= hi; i++)
 	{
-		copyData(&temp[--count2[charAt(a[i].nome, d)]], &a[i]);
+		copyData(&temp[--count[charAt(a[i].nome, d)]], &a[i]);
 	}
+
+	for(i = 0; i < ASCII + 2; i++) printf("%d(%d) ", count[i], i);
+	printf("\n\n");
 
 	for (r = 0; r < ASCII; r++)
 	{
-		printf("lo = %d count[r] = %d count[r + 1] = %d lo + count[r + 1] - 1 = %d\n", lo, count[r], count[r + 1], lo + count[r + 1] - 1);
 		_radixSortVetor(a, temp, lo + count[r], lo + count[r + 1] - 1, d + 1, N);
 	}
 }
@@ -398,7 +398,7 @@ TpContato * partitionLista(TpContato * first, TpContato * last)
 		if(pivo == i)
 		{
 			//j<i
-			if(strcmp(j->nome, i->nome) == -1)
+			if(strcmp(j->nome, i->nome) < 0)
 			{
 				swap(i , j);
 				pivo = j;
@@ -408,7 +408,7 @@ TpContato * partitionLista(TpContato * first, TpContato * last)
 
 		else
 		{
-			if(strcmp(j->nome, i->nome) == -1)
+			if(strcmp(j->nome, i->nome) < 0)
 			{
 				swap(i, j);
 				pivo = i;
