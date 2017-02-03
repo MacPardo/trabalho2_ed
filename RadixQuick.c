@@ -7,6 +7,8 @@
 #define MAX_FONE 99999999
 #define ASCII 256
 
+int fortesting;
+
 typedef struct _contato
 {
 	char nome[40];
@@ -28,6 +30,7 @@ void radixSortLista(TpContato *a, int N);
 
 int main()
 {
+	fortesting=0;
 	int qtde, opcao = 0;
 	TpContato *lista, *lista_op, vetor[TAM_VETOR], vetor_op[TAM_VETOR];
 	clock_t start, stop;
@@ -162,7 +165,7 @@ void imprimirVetor(TpContato v[], int tam)
 	}
 }
 
-void swap(TpContato * a, TpContato * b) //função criada pelo aluno #ok
+void swap(TpContato * a, TpContato * b)//RECHECKKK!!!!<<<<<---------------------
 {
 	//troca os valores de a e b
 	TpContato aux;
@@ -207,6 +210,14 @@ void quickSortVetor(TpContato vetor[], int ini, int fim)
 	}
 }
 
+void copyData(TpContato *destino, TpContato *origem)
+{
+	if (origem == NULL) return;
+
+	strcpy(destino->nome, origem->nome);
+	strcpy(destino->fone, origem->fone);
+}
+
 int charAt(char vetor[], int pos)
 {
 	if (pos < strlen(vetor))
@@ -216,13 +227,28 @@ int charAt(char vetor[], int pos)
 
 void _radixSortVetor(TpContato a[], TpContato temp[], int lo, int hi, int d, int N)
 {
-	int i, r, count[ASCII + 2] = {0};
-
+	int i, r, count[ASCII + 2] = {0}, count2[ASCII + 2];
+	
 	if (hi <= lo) return;
+	printf("a   ");
 
-	/*
-	  completar
-	*/
+	//completar
+
+	for(i = lo; i <= hi; i++)
+	{
+		count[charAt(a[i].nome, d)]++;
+	}
+	count2[0] = count[0];
+	for(i = 1; i <= ASCII; i++)
+	{
+		count[i] += count[i - 1];
+		count2[i] = count[i];
+	}
+	
+	for(i = lo; i <= hi; i++)
+	{
+		copyData(&temp[--count2[charAt(a[i].nome, d)]], &a[i]);
+	}
 
 	for (r = 0; r < ASCII; r++)
 	{
@@ -430,13 +456,6 @@ void indexLista(TpContato *lista, TpContato *v[], int N)
 	}
 }
 
-void copyData(TpContato *destino, TpContato *origem)
-{
-	if (origem == NULL) return;
-
-	strcpy(destino->nome, origem->nome);
-	strcpy(destino->fone, origem->fone);
-}
 
 void _radixSortLista(TpContato **a, TpContato **temp, int lo, int hi, int d, int N)
 {
