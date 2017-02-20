@@ -231,7 +231,6 @@ void _radixSortVetor(TpContato a[], TpContato temp[], int lo, int hi, int d, int
 	int r, i, j, count[ASCII + 2] = {0};
 	
 	if (hi <= lo) return;
-	printf("d = %d\n", d);
 
 	for (r = lo ; r <= hi; r++)
 	{
@@ -265,7 +264,6 @@ void radixSortVetor(TpContato a[], int N)
 	TpContato temp[N];
 
 	_radixSortVetor(a, temp, 0, N - 1, 0, N);
-	printf("erm what the fuck man\n");
 }
 
 void criarLista(TpContato **lista, int tam)
@@ -464,14 +462,35 @@ void indexLista(TpContato *lista, TpContato *v[], int N)
 
 void _radixSortLista(TpContato **a, TpContato **temp, int lo, int hi, int d, int N)
 {
-	TpContato *aux_a, *aux_temp;
-	int i, r, count[ASCII + 2] = {0};
+	int r, i, j, count[ASCII + 2] = {0};
 
 	if (hi <= lo) return;
 
-	/*
-	  completar
-	*/
+	for (r = lo ; r <= hi; r++)
+	{
+		count[charAt(a[r]->nome, d)]++;
+	}
+	for (r = 1;  r < ASCII + 2; r++)
+	{
+		count[r] += count[r-1];
+	}
+
+	for (r = hi; r >= lo; r--)
+	{
+		i = charAt(a[r]->nome, d);
+		j = --count[i];
+		copyData(temp[j], a[r]);
+	}
+
+	for (r = lo; r <= hi; r++)
+	{
+		copyData(a[r], temp[r]);
+	}
+
+	for (r = 0; r < ASCII; r++)
+	{
+		_radixSortLista(a, temp, lo + count[r], lo + count[r + 1] - 1, d + 1, N);
+	}
 }
 
 void radixSortLista(TpContato *a, int N)
